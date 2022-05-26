@@ -5219,7 +5219,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_HeaderMain_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/HeaderMain.vue */ "./resources/js/components/HeaderMain.vue");
-/* harmony import */ var _components_ContainerPosts_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/ContainerPosts.vue */ "./resources/js/components/ContainerPosts.vue");
+/* harmony import */ var _components_ContainerPosts_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/ContainerPosts.vue */ "./resources/js/components/ContainerPosts.vue");
 //
 //
 //
@@ -5233,7 +5233,7 @@ __webpack_require__.r(__webpack_exports__);
   name: 'App',
   components: {
     HeaderMain: _components_HeaderMain_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    ContainerPosts: _components_ContainerPosts_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    ContainerPosts: _components_ContainerPosts_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 
