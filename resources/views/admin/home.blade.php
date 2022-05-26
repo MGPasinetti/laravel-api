@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('content')
+@section('pageContent')
 <div class="container">
     @if (session('status'))
         <div class="alert alert-warning">{{ session('status') }}</div>

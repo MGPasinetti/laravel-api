@@ -20,11 +20,12 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
-        <x-navbar color="light" />
-
+    <x-navbar color="light" />
+    <div class="container">
         <main class="py-4">
-            @yield('content')
+            <div>
+                @yield('content')
+            </div>
         </main>
     </div>
 </body>
