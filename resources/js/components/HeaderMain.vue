@@ -1,6 +1,8 @@
 <template>
     <div>
-        <h1>Ecco i nostri bellissimi post</h1>
+        <router-link :to="{ name: 'home'}">Home</router-link>
+        <router-link :to="{ name: 'postIndex'}">blog</router-link>
+        <router-link :to="{ name: 'about'}">about</router-link>
     </div>
 </template>
 

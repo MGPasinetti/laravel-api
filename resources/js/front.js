@@ -32,14 +32,15 @@ window.Axios = require('axios');
 import VueRouter from 'vue-router';
 import App from './views/App.vue';
 import PageHome from './pages/PageHome.vue';
-import PageHome from './pages/PageAbout.vue';
-import PageHome from './pages/PostIndex.vue';
-import PageHome from './pages/PostShow.vue';
+import PageAbout from './pages/PageAbout.vue';
+import PostIndex from './pages/PostIndex.vue';
+import PostShow from './pages/PostShow.vue';
 
 
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+    mode: 'history',
     routes: [
         {
             path: '/',

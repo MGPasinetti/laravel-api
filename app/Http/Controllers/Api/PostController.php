@@ -13,12 +13,23 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $attributes = $request->all();
+
+        if (array_key_exists('home', $attributes)) {
+            return response()->json([
+                'success'    => true,
+                'response'  => [
+                    'data' => Post::inRandomOrder()->limit(4)->get(),
+                ]
+            ]);
+        }
+
         $posts = Post::paginate(15);
 
         return response()->json([
-            'status'    => 'success',
+            'success'    => true,
             'response'  => $posts
         ]);
     }
@@ -50,9 +61,14 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'response' => [
+                'data' => $post,
+            ]
+        ])
     }
 
     /**
