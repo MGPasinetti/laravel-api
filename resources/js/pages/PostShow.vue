@@ -1,18 +1,28 @@
 <template>
-    <div v-if="post">
+    <page-404 v-if="is404" />
+    <div v-else-if="post">
         <h1>{{ post.title }}</h1>
+        <b>From {{ post.user.name }}<span v-if="post.category"> in category {{ post.category.name }}</span></b>
+        <div class="tags">
+            <span v-for="tag in post.tags" :key="tag.id" class="tag">{{ tag.name }}</span>
+        </div>
         <p>{{ post.content }}</p>
     </div>
 </template>
 
 <script>
+import Page404 from './Page404.vue';
 export default {
     name: 'PostShow',
     props: ['slug'],
+    components: {
+        Page404,
+    },
     data() {
         return {
-            posts: null,
-            baseApiUrl: 'http://localhost:8000/api/v1/posts?home',
+            is404: false,
+            post: null,
+            baseApiUrl: 'http://localhost:8000/api/v1/posts',
         }
     },
     created() {
@@ -23,7 +33,11 @@ export default {
             if (url) {
                 Axios.get(url)
                 .then(res => {
-                    this.post =  res.data.response.data;
+                    if (res.data.success) {
+                        this.post =  res.data.response.data;
+                    } else {
+                        this.is404 = true;
+                    }
                 });
             }
         }
@@ -32,5 +46,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    .tag {
+        margin: .5rem;
+        padding: .5rem;
+        background-color: salmon;
+        border-radius: 10rem;
+    }
 </style>

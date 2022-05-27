@@ -7,10 +7,9 @@
                 <div class="card h-100">
                     <!-- <img src="..." class="card-img-top" alt="..."> -->
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ post.title }}</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <router-link :to="{ name: 'postShow', params: {slug: post.slug} }" class="btn btn-primary mt-auto">Read more</router-link>
-
+                        <h3 class="card-title">{{ post.title }}</h3>
+                        <p class="card-text">{{ getExcerpt(post.content) }}</p>
+                        <router-link :to="{name: 'postShow', params: {slug: post.slug}}" class="btn btn-primary mt-auto">Read more</router-link>
                     </div>
                 </div>
             </div>
@@ -28,6 +27,10 @@
                     <li class="page-item" :class="{disabled: !prevPageUrl}" @click="getData(prevPageUrl)">
                         <a class="page-link">Previous</a>
                     </li>
+
+                    <!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li> -->
 
                     <li class="page-item">
                         <form @submit.prevent="getData(baseApiUrl + '/?page=' + nNewPage)">
@@ -52,6 +55,7 @@ export default {
     name: 'ContainerPosts',
     data() {
         return {
+            excerptMaxLenght: 200,
             posts: [],
             baseApiUrl: 'http://localhost:8000/api/v1/posts',
             nNewPage: null,
@@ -81,12 +85,19 @@ export default {
                     this.nNewPage = null;
                 });
             }
+        },
+        getExcerpt(content) {
+            if (content.length > this.excerptMaxLenght) {
+                return content.substring(0, this.excerptMaxLenght) + ' ...';
+            } else {
+                return content;
+            }
         }
     }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
     .page-link {
         cursor: pointer;
     }

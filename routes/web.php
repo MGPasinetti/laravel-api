@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// })->name('homepage');
-
 Auth::routes();
 
 Route::middleware('auth')
@@ -34,7 +30,6 @@ Route::middleware('auth')
         Route::post('/account', 'UserController@update')->name('account.update');
         Route::delete('/account', 'UserController@destroy')->name('account.destroy');
     });
-
 
 Route::get("{any?}", function() {
     return view("guests.home");
