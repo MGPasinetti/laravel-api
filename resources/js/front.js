@@ -29,11 +29,45 @@ window.Axios = require('axios');
  */
 
 
+import VueRouter from 'vue-router';
 import App from './views/App.vue';
+import PageHome from './pages/PageHome.vue';
+import PageHome from './pages/PageAbout.vue';
+import PageHome from './pages/PostIndex.vue';
+import PageHome from './pages/PostShow.vue';
+
+
+Vue.use(VueRouter);
+
+const router = new VueRouter({
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: PageHome,
+        },
+        {
+            path: '/about',
+            name: 'about',
+            component: PageAbout,
+        },
+        {
+            path: '/blog',
+            name: 'postIndex',
+            component: PostIndex,
+        },
+        {
+            path: '/blog/:slug',
+            name: 'postShow',
+            component: PostShow,
+        },
+    ],
+});
 
 const app = new Vue({
     el: '#app',
     render: h => h(App),
+    router,
 });
 
 
