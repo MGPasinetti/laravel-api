@@ -17,7 +17,6 @@ class PostController extends Controller
 {
     private function getValidators($model) {
         return [
-            // 'user_id'   => 'required|exists:App\User,id',
             'title'         => 'required|max:100',
             'slug'          => [
                 'required',
@@ -43,22 +42,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::whereRaw('1 = 1');
-
-        if ($request->s) {
-            $posts->where(function($query) use ($request) { // per aggiungere le parentesi nell'SQL
-                $query->where('title', 'LIKE', "%$request->s%")
-                    ->orWhere('content', 'LIKE', "%$request->s%");
-            });
-        }
-
-        if ($request->category) {
-            $posts->where('category_id', $request->category);
-        }
-
-        if ($request->author) {
-            $posts->where('user_id', $request->author);
-        }
+        $posts = $this->composeQuery($request);
 
         $posts = $posts->paginate(20);
 
@@ -66,21 +50,6 @@ class PostController extends Controller
         unset($queries['page']);
         $posts->withPath('?' . http_build_query($queries, '', '&'));
 
-/*
-        $posts = Post::when($request->s, function ($query, $request){
-            return $query->where(function($query) use ($request) {
-                $query->where('title', 'LIKE', "%$request->s%")
-                    ->orWhere('content', 'LIKE', "%$request->s%");
-            });
-        })
-        ->when($request->category, function ($query, $request){
-            return $query->where('category_id', $request->category);
-        })
-        ->when($request->author, function ($query, $request){
-            return $query->where('user_id', $request->author);
-        })
-        ->paginate(20);
-*/
 
         $categories = Category::all();
         $users = User::all();
@@ -116,7 +85,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate($this->getValidators(null));
 
         $formData = $request->all() + [
@@ -140,8 +108,6 @@ class PostController extends Controller
         }
 
         $formData['tags'] = $tagIds;
-
-        //dd($tags_from_content);
 
 
         $post = Post::create($formData);

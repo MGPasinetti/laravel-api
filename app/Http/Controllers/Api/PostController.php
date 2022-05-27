@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
+    use \App\Traits\searchFilters;
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +27,9 @@ class PostController extends Controller
             ]);
         }
 
-        $posts = Post::paginate(15);
+        $posts = $this->composeQuery($request);
+
+        $posts = $posts->with(['user', 'category', 'tags'])->paginate(15);
 
         return response()->json([
             'success'    => true,
@@ -61,14 +64,21 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($slug)
     {
-        return response()->json([
-            'success' => true,
-            'response' => [
-                'data' => $post,
-            ]
-        ])
+        $post = Post::with(['user', 'category', 'tags'])->where('slug', $slug)->first();
+        if ($post) {
+            return response()->json([
+                'success'   => true,
+                'response'  => [
+                    'data'      => $post,
+                ]
+            ]);
+        } else {
+            return response()->json([
+                'success'   => false,
+            ]);
+        }
     }
 
     /**
