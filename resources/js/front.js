@@ -35,7 +35,7 @@ import PageHome from './pages/PageHome.vue';
 import PageAbout from './pages/PageAbout.vue';
 import PostIndex from './pages/PostIndex.vue';
 import PostShow from './pages/PostShow.vue';
-
+import Page404 from './pages/Page404.vue';
 
 Vue.use(VueRouter);
 
@@ -61,6 +61,11 @@ const router = new VueRouter({
             path: '/blog/:slug',
             name: 'postShow',
             component: PostShow,
+        },
+        {
+            path: '*',
+            name: 'page404',
+            component: Page404,
         },
     ],
 });
