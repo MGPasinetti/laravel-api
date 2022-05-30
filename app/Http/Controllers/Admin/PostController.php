@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Post;
-use App\Category;
 use App\Tag;
+use App\Post;
 use App\User;
+use App\Category;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Route;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class PostController extends Controller
 {
+    use \App\Traits\searchFilters;
+
     private function getValidators($model) {
         return [
+            // 'user_id'   => 'required|exists:App\User,id',
             'title'         => 'required|max:100',
             'slug'          => [
                 'required',
@@ -25,7 +29,8 @@ class PostController extends Controller
             ],
             'category_id'   => 'required|exists:App\Category,id',
             'content'       => 'required',
-            'tags'          => 'exists:App\Tag,id'
+            'tags'          => 'exists:App\Tag,id',
+            'post_image'    => 'nullable|image'
         ];
     }
 
@@ -50,6 +55,21 @@ class PostController extends Controller
         unset($queries['page']);
         $posts->withPath('?' . http_build_query($queries, '', '&'));
 
+/*
+        $posts = Post::when($request->s, function ($query, $request){
+            return $query->where(function($query) use ($request) {
+                $query->where('title', 'LIKE', "%$request->s%")
+                    ->orWhere('content', 'LIKE', "%$request->s%");
+            });
+        })
+        ->when($request->category, function ($query, $request){
+            return $query->where('category_id', $request->category);
+        })
+        ->when($request->author, function ($query, $request){
+            return $query->where('user_id', $request->author);
+        })
+        ->paginate(20);
+*/
 
         $categories = Category::all();
         $users = User::all();
@@ -85,12 +105,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate($this->getValidators(null));
 
-        $formData = $request->all() + [
-            'user_id' => Auth::user()->id
-        ];
+        $data = $request->all();
 
+        $img_path = Storage::put('uploads', $data['post_image']);
+
+        $formData = [
+            'user_id'       => Auth::user()->id,
+            'post_image'    => $img_path
+        ] + $data;
+
+        //dd($formData);
 
         //preg_match_all('/#([0-9a-zA-Z]*)/', $formData['content'], $tags_from_content);
         preg_match_all('/#(\S*)\b/', $formData['content'], $tags_from_content);
@@ -108,6 +135,8 @@ class PostController extends Controller
         }
 
         $formData['tags'] = $tagIds;
+
+        //dd($tags_from_content);
 
 
         $post = Post::create($formData);
@@ -159,8 +188,16 @@ class PostController extends Controller
         $request->validate($this->getValidators($post));
         $formData = $request->all();
 
+        if (array_key_exists('post_image', $formData)) {
+            Storage::delete($post->post_image);
+            $img_path = Storage::put('uploads', $formData['post_image']);
+            $formData = [
+                'post_image'    => $img_path
+            ] + $formData;
+        }
+
         $post->update($formData);
-        $post->tags()->sync($formData['tags']);
+        if (array_key_exists('tags', $formData)) $post->tags()->sync($formData['tags']);
 
         return redirect()->route('admin.posts.show', $post->slug);
     }
