@@ -1,9 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Lead;
+use App\Mail\SendNewMail;
+use App\Mail\NewLeadToLead;
+use App\Mail\NewLeadToAdmin;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class LeadController extends Controller
 {
@@ -35,7 +40,14 @@ class LeadController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $lead = Lead::create($request->all());
+
+        Mail::to('admin.henri@boolpress.com')->send(new NewLeadToAdmin($lead));
+        Mail::to($lead->email)->send(new NewLeadToLead($lead));
+
+        return response()->json([
+            'statusMessage' => 'Tutto OK',
+        ]);
     }
 
     /**
