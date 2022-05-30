@@ -3,6 +3,7 @@
         <router-link :to="{ name: 'home'}">Home</router-link>
         <router-link :to="{ name: 'postIndex'}">blog</router-link>
         <router-link :to="{ name: 'about'}">about</router-link>
+        <router-link :to="{name: 'contact'}">Contact us</router-link>
     </div>
 </template>
 
