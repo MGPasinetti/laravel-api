@@ -45182,7 +45182,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_PageAbout_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/PageAbout.vue */ "./resources/js/pages/PageAbout.vue");
 /* harmony import */ var _pages_PostIndex_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/PostIndex.vue */ "./resources/js/pages/PostIndex.vue");
 /* harmony import */ var _pages_PostShow_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/PostShow.vue */ "./resources/js/pages/PostShow.vue");
-/* harmony import */ var _pages_Page404_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pages/Page404.vue */ "./resources/js/pages/Page404.vue");
+/* harmony import */ var _pages_Page404_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/Page404.vue */ "./resources/js/pages/Page404.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -45238,7 +45238,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   }, {
     path: '*',
     name: 'page404',
-    component: _pages_Page404_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
+    component: _pages_Page404_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
   }]
 });
 var app = new Vue({
